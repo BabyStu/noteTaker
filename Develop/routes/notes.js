@@ -49,20 +49,18 @@ notes.post('/', (req, res) => {
 
         const noteString = JSON.stringify(newNote)
 
-        fs.readFile('./db/notes.json', 'utf8', (readErr, noteString) => {
-            if (readErr) {
-                console.error('ERROR:', readErr);
-                res.status(500).json({ error: 'An error occurred while reading the file' });
+        fs.readFile('./db/notes.json', 'utf8', (error, noteString) => {
+            if (error) {
+                console.log('ERROR:', error);
                 return;
             }
         
             let noteParse = JSON.parse(noteString) || [];
             noteParse.push(newNote);
         
-            fs.writeFile('./db/notes.json', JSON.stringify(noteParse), (writeErr) => {
-                if (writeErr) {
-                    console.error('ERROR:', writeErr);
-                    res.status(500).json({ error: 'An error occurred while writing the file' });
+            fs.writeFile('./db/notes.json', JSON.stringify(noteParse), (error) => {
+                if (error) {
+                    console.log('ERROR:', error);
                     return;
                 }
         
@@ -73,7 +71,7 @@ notes.post('/', (req, res) => {
         
         
     } else {
-        console.error('ERROR!');
+        console.log('ERROR!');
     }
 });
 
