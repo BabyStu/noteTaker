@@ -6,35 +6,35 @@ notes.get('/', (req, res) => {
     res.json(JSON.parse(fs.readFileSync('./db/notes.json', 'utf8')))
 });
 
-// notes.delete('/:note_id', (req, res) => {
-//     console.log('inside delete')
-//     const noteId = req.params.note_id;
-//     console.log(noteId)
+notes.delete('/:id', (req, res) => {
+    console.log('inside delete')
+    const noteId = req.params.id;
+    console.log(noteId)
 
-//     fs.readFile(./db/notes.json, 'utf8', (readErr, data) => {
-//         console.log(noteId)
+    fs.readFile('./db/notes.json', 'utf8', (readErr, data) => {
+        console.log(noteId)
 
-//         if (readErr) {
-//             console.error('ERROR', readErr);
-//             return;
-//         }
+        if (readErr) {
+            console.error('ERROR', readErr);
+            return;
+        }
 
-//         const json = JSON.parse(data);
+        const json = JSON.parse(data);
 
-//         const updatedJson = json.filter(note => note.note_id !== noteId);
+        const updatedJson = json.filter(note => note.id !== noteId);
 
-//         console.log(noteId)
+        console.log(noteId)
 
-//         fs.writeFile(./db/notes.json, JSON.stringify(updatedJson), (writeErr) => {
-//             if (writeErr) {
-//                 console.log('ERROR', writeErr);
-//                 return;
-//             }
+        fs.writeFile('./db/notes.json', JSON.stringify(updatedJson), (writeErr) => {
+            if (writeErr) {
+                console.log('ERROR', writeErr);
+                return;
+            }
 
-//             res.json('DELETED NOTE');
-//         });
-//     });
-// });
+            res.json('DELETED NOTE');
+        });
+    });
+});
 
 notes.post('/', (req, res) => {
 
@@ -44,10 +44,10 @@ notes.post('/', (req, res) => {
         const newNote = {
             title,
             text,
-            note_id: uuidv4(),
+            id: uuidv4(),
         };
 
-        const noteString = JSON.stringify(newNote)
+        let noteString = JSON.stringify(newNote)
 
         fs.readFile('./db/notes.json', 'utf8', (error, noteString) => {
             if (error) {
@@ -65,7 +65,7 @@ notes.post('/', (req, res) => {
                 }
         
                 console.log('Note added!');
-                res.json('Note added!');
+                res.json(noteParse);
             });
         });
         
